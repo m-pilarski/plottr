@@ -36,9 +36,16 @@ iris_plot <- iris |>
 
 ``` r
 plot_to_file(
-  .plot_obj=iris_plot, .figure_dir=tempdir(), .width=150, .height=100,
-  .knit=TRUE
+  .plot_obj=iris_plot, .figure_dir="man/figures/README-plot_to_file", 
+  .width=150, .height=100, .knit=TRUE
 )
 ```
 
-<img src="/tmp/RtmplyKgL5/iris_plot.png" width="100%" />
+<img src="man/figures/README-plot_to_file/iris_plot.png" width="100%" />
+
+``` r
+
+fs::dir_ls("man/figures/README-plot_to_file")
+#> man/figures/README-plot_to_file/iris_plot.pdf
+#> man/figures/README-plot_to_file/iris_plot.png
+```
