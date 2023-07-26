@@ -32,7 +32,7 @@ iris_plot <- iris |>
 
 plot_to_file(
   .plot_obj=iris_plot, .figure_dir="man/figures/README-plot_to_file", 
-  .width=150, .height=100, .knit=TRUE
+  .width=125, .height=100, .knit=TRUE
 )
 ```
 
