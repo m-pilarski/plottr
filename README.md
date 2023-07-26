@@ -14,8 +14,8 @@ You can install the development version of plottr from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("m-pilarski/plottr")
+# install.packages("remotes")
+remotes::install_github("m-pilarski/plottr")
 ```
 
 ## Example
