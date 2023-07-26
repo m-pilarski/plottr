@@ -30,7 +30,7 @@ plot_to_file <- function(
   .showtext_off <- is(try(showtext::showtext_end(), silent=TRUE), "try-error")
 
   stopifnot(
-    ggplot2::is.ggplot(.plot),
+    ggplot2::is.ggplot(.plot_obj),
     fs::dir_exists(.figure_dir),
     .plot_name != ".",
     all(names(.fonts) %in% c("main", "math", "mono")),
@@ -45,7 +45,7 @@ plot_to_file <- function(
     "\\usepackage{fontspec}",
     "\\usepackage{unicode-math}",
     purrr::imap_chr(purrr::compact(.fonts), \(..v, ..n){
-      str_c("\\set", ..n, "font{", ..v, "}")
+      stringr::str_c("\\set", ..n, "font{", ..v, "}")
     }),
     "\\PreviewEnvironment{pgfpicture}",
     "\\setlength\\PreviewBorder{0pt}",
