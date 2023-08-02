@@ -33,7 +33,7 @@ remotes::install_github("m-pilarski/plottr")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r, message=FALSE}
+```{r, message=FALSE, out.width="50%", fig.align="center"}
 library(plottr)
 library(ggplot2)
 
@@ -42,9 +42,23 @@ iris_plot <- iris |>
   geom_point()
 
 plot_to_file(
-  .plot_obj=iris_plot, .figure_dir="man/figures/README-plot_to_file", 
+  .plot_obj=iris_plot, .plot_name="iris_plot_1", 
+  .figure_dir="man/figures/README-plot_to_file", 
   .width=125, .height=100, .knit=TRUE
 )
-
+```
+```{r, out.width="50%", fig.align="center"}
+plot_to_file(
+  .plot_obj=iris_plot, .plot_name="iris_plot_2", 
+  .figure_dir="man/figures/README-plot_to_file", 
+  .fonts=list(main="Nimbus Sans"),
+  .width=125, .height=100, .knit=TRUE
+)
+```
+```{r}
 fs::dir_ls("man/figures/README-plot_to_file")
 ```
+```{r, include=FALSE}
+fs::file_delete("README-tikzDictionary")
+```
+

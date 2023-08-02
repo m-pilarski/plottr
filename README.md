@@ -31,16 +31,29 @@ iris_plot <- iris |>
   geom_point()
 
 plot_to_file(
-  .plot_obj=iris_plot, .figure_dir="man/figures/README-plot_to_file", 
+  .plot_obj=iris_plot, .plot_name="iris_plot_1", 
+  .figure_dir="man/figures/README-plot_to_file", 
   .width=125, .height=100, .knit=TRUE
 )
 ```
 
-<img src="man/figures/README-plot_to_file/iris_plot.png" width="100%" />
+<img src="man/figures/README-plot_to_file/iris_plot_1.png" width="50%" style="display: block; margin: auto;" />
 
 ``` r
+plot_to_file(
+  .plot_obj=iris_plot, .plot_name="iris_plot_2", 
+  .figure_dir="man/figures/README-plot_to_file", 
+  .fonts=list(main="Nimbus Sans"),
+  .width=125, .height=100, .knit=TRUE
+)
+```
 
+<img src="man/figures/README-plot_to_file/iris_plot_2.png" width="50%" style="display: block; margin: auto;" />
+
+``` r
 fs::dir_ls("man/figures/README-plot_to_file")
-#> man/figures/README-plot_to_file/iris_plot.pdf
-#> man/figures/README-plot_to_file/iris_plot.png
+#> man/figures/README-plot_to_file/iris_plot_1.pdf
+#> man/figures/README-plot_to_file/iris_plot_1.png
+#> man/figures/README-plot_to_file/iris_plot_2.pdf
+#> man/figures/README-plot_to_file/iris_plot_2.png
 ```

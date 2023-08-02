@@ -8,12 +8,12 @@ plot_to_file(
   .plot_obj,
   .plot_name = NULL,
   .figure_dir = ".",
-  .width = NULL,
-  .height = NULL,
+  .width = 50,
+  .height = 50,
   .units = "mm",
   .png_dpi = 600,
   .knit = TRUE,
-  .fonts = list(main = "TeX Gyre Termes", math = NULL, mono = NULL)
+  .fonts = list(main = NULL, math = NULL, mono = NULL)
 )
 }
 \arguments{
