@@ -22,7 +22,7 @@
 #' # )
 plot_to_file <- function(
   .plot_obj, .plot_name=NULL, .figure_dir=".", .width=50, .height=50,
-  .units="mm", .png_dpi=600, .knit=TRUE,
+  .units="mm", .png_dpi=600, .knit=FALSE,
   .fonts=list(main=NULL, math=NULL, mono=NULL)
 ){
 
@@ -84,18 +84,19 @@ plot_to_file <- function(
     standAlone=TRUE, lwdUnit=72.27/96
   )
 
-  print(.plot_obj)
-
-  dev.off()
+  tryCatch(expr={print(.plot_obj)}, finally={dev.off()})
 
   fs::file_move(tinytex::lualatex(.figure_path_tex), .figure_path_pdf)
 
   sink(nullfile())
   tryCatch(
-    suppressWarnings(pdftools::pdf_convert(
-      pdf=.figure_path_pdf, filenames=.figure_path_png,
-      format="png", pages=1, dpi=.png_dpi
-    )),
+    expr={
+      pdftools::pdf_convert(
+        pdf=.figure_path_pdf, filenames=.figure_path_png,
+        format="png", pages=1, dpi=.png_dpi
+      )
+    },
+    warning=function(..w){},
     finally={sink()}
   )
 

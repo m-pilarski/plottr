@@ -12,7 +12,7 @@ plot_to_file(
   .height = 50,
   .units = "mm",
   .png_dpi = 600,
-  .knit = TRUE,
+  .knit = FALSE,
   .fonts = list(main = NULL, math = NULL, mono = NULL)
 )
 }
