@@ -90,13 +90,10 @@ plot_to_file <- function(
 
   sink(nullfile())
   tryCatch(
-    expr={
-      pdftools::pdf_convert(
-        pdf=.figure_path_pdf, filenames=.figure_path_png,
-        format="png", pages=1, dpi=.png_dpi
-      )
-    },
-    warning=function(..w){},
+    suppressWarnings(pdftools::pdf_convert(
+      pdf=.figure_path_pdf, filenames=.figure_path_png,
+      format="png", pages=1, dpi=.png_dpi
+    )),
     finally={sink()}
   )
 
@@ -111,14 +108,27 @@ plot_to_file <- function(
 
 }
 
+
 #'
 #'
 #'
 #'
-str_escape_tex <- function(.str){
-  rlang::set_names(
-    x=stringr::str_replace_all(.str, "[_%$#]", "\\\\\\0"), nm=names(.str)
-  )
+pltr_escape_tex <- function(.str){
+  .str |>
+    stringr::str_split(".(?=<tex>)|(?<=</tex>)") |>
+    purrr::map_chr(function(..tok_vec){
+      ..tok_vec |>
+        purrr::map_chr(function(...tok){
+          if(stringr::str_detect(...tok, "^<tex>.*</tex>$")){
+            ...tok <- stringr::str_remove_all(...tok, "^<tex>|</tex>$")
+          }else{
+            ...tok <- stringr::str_replace_all(...tok, "[_%$#&{}]", "\\\\\\0")
+          }
+          return(...tok)
+        }) |>
+        stringr::str_c(collapse="")
+    }) |>
+    rlang::set_names(nm=names(.str))
 }
 
 #'
