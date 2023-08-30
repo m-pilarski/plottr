@@ -28,12 +28,14 @@ plot_to_file <- function(
 
   `%0%` <- vctrs::`%0%`
 
-  .width_in <- as.double(
-    units::set_units(units::set_units(.width, .units, mode="standard"), "in")
+  .dims_to_in_factor <- dplyr::case_when(
+    .units == "mm" ~ 1 / 25.4,
+    .units == "cm" ~ 1 / 25.4 * 10,
+    TRUE ~ NA_real_
   )
-  .height_in <- as.double(
-    units::set_units(units::set_units(.height, .units, mode="standard"), "in")
-  )
+
+  .width_in <- .width * .dims_to_in_factor
+  .height_in <- .height * .dims_to_in_factor
 
   .options_backup <- options(
     "tikzLatex", "tikzLualatex", "tikzUnicodeMetricPackages"
