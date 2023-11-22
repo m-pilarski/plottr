@@ -56,8 +56,17 @@ plot_to_file <- function(
     .showtext_off
   )
 
+  .figure_path_noext <- fs::path(.figure_dir, .plot_name)
+  .figure_dir_tex <- fs::dir_create(fs::file_temp())
+  .figure_path_tex <- fs::file_temp(tmp_dir=.figure_dir_tex, ext="tex")
+  # .figure_path_tex <- fs::path_ext_set(.figure_path_noext, "tex")
+  .figure_path_pdf <- fs::path_ext_set(.figure_path_noext, "pdf")
+  .figure_path_png <- fs::path_ext_set(.figure_path_noext, "png")
+
   .latex_packages <- stringr::str_c(
     "\\usepackage[T1]{fontenc}",
+    "\\usepackage{graphicx}",
+    stringr::str_c("\\graphicspath{", .figure_dir_tex, "}"),
     "\\usepackage{tikz}",
     "\\IfFileExists{luatex85.sty}{\\usepackage{luatex85}}{}",
     "\\usetikzlibrary{calc}",
@@ -74,21 +83,16 @@ plot_to_file <- function(
     sep="\n"
   )
 
-  .figure_path_noext <- fs::path(.figure_dir, .plot_name)
-  .figure_path_tex <- fs::file_temp(ext="tex")
-  # .figure_path_tex <- fs::path_ext_set(.figure_path_noext, "tex")
-  .figure_path_pdf <- fs::path_ext_set(.figure_path_noext, "pdf")
-  .figure_path_png <- fs::path_ext_set(.figure_path_noext, "png")
-
   tikzDevice::tikz(
     file=.figure_path_tex, width=.width_in, height=.height_in, engine="luatex",
-    packages=.latex_packages,
-    standAlone=TRUE, lwdUnit=72.27/96
+    packages=.latex_packages, standAlone=TRUE, lwdUnit=72.27/96
   )
 
   tryCatch(expr={print(.plot_obj)}, finally={dev.off()})
 
   fs::file_move(tinytex::lualatex(.figure_path_tex), .figure_path_pdf)
+
+  fs::dir_delete(.figure_dir_tex)
 
   sink(nullfile())
   tryCatch(
@@ -131,30 +135,4 @@ pltr_escape_tex <- function(.str){
         stringr::str_c(collapse="")
     }) |>
     rlang::set_names(nm=names(.str))
-}
-
-#'
-#'
-#'
-#'
-install_latex_deps <- function(){
-
-  tinytex::install_tinytex()
-
-  .tex_pkg_deps <- c(
-    "amsmath", "context", "ec", "epstopdf-pkg", "etoolbox", "fontspec",
-    "graphics", "graphics-cfg", "graphics-def", "grfext", "iftex", "infwarerr",
-    "kvdefinekeys", "kvoptions", "kvsetkeys", "l3backend", "l3kernel",
-    "l3packages", "latexconfig", "lm", "ltxcmds", "lualatex-math", "luatex",
-    "luatex85", "microtype", "ms", "oberdiek", "pdftexcmds", "pgf", "preview",
-    "unicode-data", "unicode-math", "xcolor", "xunicode"
-  )
-
-  # optional
-  .tex_pkg_deps <- c(.tex_pkg_deps, "tex-gyre")
-
-  tinytex::tlmgr_install(c(
-    .tex_pkg_deps[!tinytex::check_installed(.tex_pkg_deps)]
-  ))
-
 }
