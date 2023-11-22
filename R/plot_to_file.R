@@ -66,8 +66,9 @@ plot_to_file <- function(
   .latex_packages <- stringr::str_c(
     "\\usepackage[T1]{fontenc}",
     "\\usepackage{graphicx}",
-    stringr::str_c("\\graphicspath{", .figure_dir_tex, "}"),
+    stringr::str_c("\\graphicspath{{", .figure_dir_tex, "}}"),
     "\\usepackage{tikz}",
+    "\\let\\pgfimage=\\includegraphics",
     "\\IfFileExists{luatex85.sty}{\\usepackage{luatex85}}{}",
     "\\usetikzlibrary{calc}",
     "\\usepackage{fontspec}",
@@ -90,16 +91,27 @@ plot_to_file <- function(
 
   tryCatch(expr={print(.plot_obj)}, finally={dev.off()})
 
-  fs::file_move(tinytex::lualatex(.figure_path_tex), .figure_path_pdf)
+  .wd_backup <- getwd()
+  tryCatch(
+    expr={
+      setwd(.figure_dir_tex)
+      fs::file_move(
+        tinytex::lualatex(file=.figure_path_tex), .figure_path_pdf
+      )
+    },
+    finally={setwd(.wd_backup)}
+  )
 
   fs::dir_delete(.figure_dir_tex)
 
   sink(nullfile())
   tryCatch(
-    suppressWarnings(pdftools::pdf_convert(
-      pdf=.figure_path_pdf, filenames=.figure_path_png,
-      format="png", pages=1, dpi=.png_dpi
-    )),
+    expr={
+      suppressWarnings(pdftools::pdf_convert(
+        pdf=.figure_path_pdf, filenames=.figure_path_png,
+        format="png", pages=1, dpi=.png_dpi
+      ))
+    },
     finally={sink()}
   )
 
