@@ -59,7 +59,6 @@ plot_to_file <- function(
   .figure_path_noext <- fs::path(.figure_dir, .plot_name)
   .figure_dir_tex <- fs::dir_create(fs::file_temp())
   .figure_path_tex <- fs::file_temp(tmp_dir=.figure_dir_tex, ext="tex")
-  # .figure_path_tex <- fs::path_ext_set(.figure_path_noext, "tex")
   .figure_path_pdf <- fs::path_ext_set(.figure_path_noext, "pdf")
   .figure_path_png <- fs::path_ext_set(.figure_path_noext, "png")
 
@@ -94,7 +93,7 @@ plot_to_file <- function(
   .wd_backup <- getwd()
   tryCatch(
     expr={
-      setwd(.figure_dir_tex)
+      setwd(fs::path_temp())
       fs::file_move(
         tinytex::lualatex(file=.figure_path_tex), .figure_path_pdf
       )
