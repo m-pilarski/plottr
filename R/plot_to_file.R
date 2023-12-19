@@ -56,7 +56,7 @@ plot_to_file <- function(
     .showtext_off
   )
 
-  .figure_path_noext <- fs::path(.figure_dir, .plot_name)
+  .figure_path_noext <- fs::path(fs::path_real(.figure_dir), .plot_name)
   .figure_dir_tex <- fs::dir_create(fs::file_temp())
   .figure_path_tex <- fs::file_temp(tmp_dir=.figure_dir_tex, ext="tex")
   .figure_path_pdf <- fs::path_ext_set(.figure_path_noext, "pdf")
