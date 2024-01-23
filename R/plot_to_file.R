@@ -45,7 +45,7 @@ plot_to_file <- function(
   options(tikzLatex=unname(which_bin("pdflatex")))
   options(tikzLualatex=unname(which_bin("lualatex")))
   options(tikzUnicodeMetricPackages="")
-  options(tikzUnicodeMetricPackages=fs::path_temp())
+  options(tikzMetricsDictionary=fs::path_temp())
 
   if(is.null(.plot_name)){.plot_name <- deparse(substitute(.plot_obj))}
   .showtext_off <- is(try(showtext::showtext_end(), silent=TRUE), "try-error")
