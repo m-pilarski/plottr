@@ -42,10 +42,14 @@ plot_to_file <- function(
     "tikzMetricsDictionary"
   )
 
-  options(tikzLatex=unname(which_bin("pdflatex")))
-  options(tikzLualatex=unname(which_bin("lualatex")))
-  options(tikzUnicodeMetricPackages="")
-  options(tikzMetricsDictionary=fs::path_temp())
+  options(
+    tikzLatex=unname(which_bin("pdflatex")),
+    tikzLualatex=unname(which_bin("lualatex")),
+    tikzUnicodeMetricPackages="",
+    tikzUnicodeMetricPackages=fs::path(
+      fs::path_temp(), digest::digest(match.call()), ext="tikzDict"
+    )
+  )
 
   if(is.null(.plot_name)){.plot_name <- deparse(substitute(.plot_obj))}
   .showtext_off <- is(try(showtext::showtext_end(), silent=TRUE), "try-error")
