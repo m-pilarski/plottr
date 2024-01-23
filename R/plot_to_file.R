@@ -46,7 +46,7 @@ plot_to_file <- function(
     tikzLatex=unname(which_bin("pdflatex")),
     tikzLualatex=unname(which_bin("lualatex")),
     tikzUnicodeMetricPackages="",
-    tikzUnicodeMetricPackages=fs::path(
+    tikzMetricsDictionary=fs::path(
       fs::path_temp(), digest::digest(environment()), ext="tikzDict"
     )
   )

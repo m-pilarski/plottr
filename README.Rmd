@@ -58,7 +58,3 @@ plot_to_file(
 ```{r}
 fs::dir_ls("man/figures/README-plot_to_file")
 ```
-```{r, include=FALSE}
-fs::file_delete("README-tikzDictionary")
-```
-
