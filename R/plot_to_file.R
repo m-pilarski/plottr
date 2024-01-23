@@ -38,12 +38,14 @@ plot_to_file <- function(
   .height_in <- .height * .dims_to_in_factor
 
   .options_backup <- options(
-    "tikzLatex", "tikzLualatex", "tikzUnicodeMetricPackages"
+    "tikzLatex", "tikzLualatex", "tikzUnicodeMetricPackages",
+    "tikzMetricsDictionary"
   )
 
   options(tikzLatex=unname(which_bin("pdflatex")))
   options(tikzLualatex=unname(which_bin("lualatex")))
   options(tikzUnicodeMetricPackages="")
+  options(tikzUnicodeMetricPackages=fs::path_temp())
 
   if(is.null(.plot_name)){.plot_name <- deparse(substitute(.plot_obj))}
   .showtext_off <- is(try(showtext::showtext_end(), silent=TRUE), "try-error")
