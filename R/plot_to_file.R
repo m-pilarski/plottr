@@ -83,6 +83,17 @@ plot_to_file <- function(
     purrr::imap_chr(purrr::compact(.fonts), function(..v, ..n){
       stringr::str_c("\\set", ..n, "font{", ..v, "}")
     }) %0% "",
+    "\\usepackage{siunitx}",
+    "\\sisetup{",
+    "  locale = US,",
+    "  detect-all,",
+    "  detect-weight=true,",
+    "  detect-family=true,",
+    "  mode=text,",
+    "  group-digits=integer, ",
+    "  group-separator={,},",
+    "  group-minimum-digits={3}",
+    "}",
     "\\PreviewEnvironment{pgfpicture}",
     "\\setlength\\PreviewBorder{0pt}",
     "",
