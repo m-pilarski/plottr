@@ -17,8 +17,8 @@ install_latex_deps <- function(){
     "graphics", "graphics-cfg", "graphics-def", "grfext", "iftex", "infwarerr",
     "kvdefinekeys", "kvoptions", "kvsetkeys", "l3backend", "l3kernel",
     "l3packages", "latexconfig", "lm", "ltxcmds", "lualatex-math", "luatex",
-    "luatex85", "microtype", "ms", "oberdiek", "pdftexcmds", "pgf", "preview",
-    "unicode-data", "unicode-math", "xcolor", "xunicode"
+    "luatex85", "microtype", "ragged2e", "oberdiek", "pdftexcmds", "pgf",
+    "preview", "unicode-data", "unicode-math", "xcolor", "xunicode"
   )
 
   # optional

@@ -46,8 +46,11 @@ plot_to_file <- function(
     tikzLatex=unname(which_bin("pdflatex")),
     tikzLualatex=unname(which_bin("lualatex")),
     tikzUnicodeMetricPackages="",
+    # tikzMetricsDictionary=fs::path(
+    #   fs::path_temp(), digest::digest(environment()), ext="tikzDict"
+    # )
     tikzMetricsDictionary=fs::path(
-      fs::path_temp(), digest::digest(environment()), ext="tikzDict"
+      fs::path_temp(), "plottr-cache", ext="tikzDict"
     )
   )
 
@@ -73,9 +76,9 @@ plot_to_file <- function(
     "\\usepackage{graphicx}",
     stringr::str_c("\\graphicspath{{", .figure_dir_tex, "}}"),
     "\\usepackage{tikz}",
-    "\\let\\pgfimage=\\includegraphics",
-    "\\IfFileExists{luatex85.sty}{\\usepackage{luatex85}}{}",
     "\\usetikzlibrary{calc}",
+    "\\let\\pgfimage=\\includegraphics",
+    "\\usepackage{luatex85}",
     "\\usepackage{fontspec}",
     "\\usepackage[active,tightpage,psfixbb]{preview}",
     "\\usepackage{microtype}",
@@ -107,16 +110,9 @@ plot_to_file <- function(
 
   tryCatch(expr={print(.plot_obj)}, finally={dev.off()})
 
-  .wd_backup <- getwd()
-  tryCatch(
-    expr={
-      # setwd(fs::path_temp())
-      fs::file_move(
-        tinytex::lualatex(file=.figure_path_tex),
-        .figure_path_pdf
-      )
-    },
-    finally={setwd(.wd_backup)}
+  fs::file_move(
+    tinytex::lualatex(file=.figure_path_tex),
+    .figure_path_pdf
   )
 
   fs::dir_delete(.figure_dir_tex)
