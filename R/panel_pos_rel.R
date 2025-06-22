@@ -27,18 +27,18 @@ calc_element_margin_data <- function(.plot_obj){
     dplyr::rowwise() |>
     dplyr::mutate(
       name = name,
-      margin_top = sum(vctrs::vec_slice(
-        unit_to_mm(purrr::chuck(.plot_grob, "heights")), seq_len(t - 1)
-      )),
-      margin_left = sum(vctrs::vec_slice(
-        unit_to_mm(purrr::chuck(.plot_grob, "widths")), seq_len(l - 1)
-      )),
-      margin_bottom = sum(vctrs::vec_slice(
-        unit_to_mm(purrr::chuck(.plot_grob, "heights")), -seq_len(t)
-      )),
-      margin_right = sum(vctrs::vec_slice(
-        unit_to_mm(purrr::chuck(.plot_grob, "widths")), -seq_len(l)
-      )),
+      margin_top = sum(
+        head(unit_to_mm(purrr::chuck(.plot_grob, "heights")), t - 1)
+      ),
+      margin_left = sum(
+        head(unit_to_mm(purrr::chuck(.plot_grob, "widths")), l - 1)
+      ),
+      margin_bottom = sum(
+        tail(unit_to_mm(purrr::chuck(.plot_grob, "heights")), -t)
+      ),
+      margin_right = sum(
+        tail(unit_to_mm(purrr::chuck(.plot_grob, "widths")), -l)
+      ),
       .keep="none"
     ) |>
     dplyr::ungroup() |>
