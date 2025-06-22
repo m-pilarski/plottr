@@ -20,6 +20,7 @@ Imports:
     rlang,
     showtext,
     stringr,
+    tidyselect,
     tikzDevice,
     tinytex,
     vctrs
