@@ -17,11 +17,11 @@ unit_to_mm <- function(.x){
 #' @export
 #'
 #' @examples NULL
-calc_element_margin_data <- function(.ggplot){
+calc_element_margin_data <- function(.plot_obj){
 
-  .plot_grob <- ggplot2::ggplotGrob(.ggplot)
+  .plot_grob <- ggplot2::ggplotGrob(.plot_obj)
 
-  .element_pos_rel <-
+  .element_margin_data <-
     .plot_grob |>
     purrr::chuck("layout") |>
     dplyr::rowwise() |>
@@ -50,6 +50,6 @@ calc_element_margin_data <- function(.ggplot){
       margin_x = margin_left + margin_right,
     )
 
-  return(.panel_pos_rel)
+  return(.element_margin_data)
 
 }
