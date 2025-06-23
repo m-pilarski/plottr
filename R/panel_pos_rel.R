@@ -27,6 +27,8 @@ calc_element_margin_data <- function(.ggplot){
     dplyr::rowwise() |>
     dplyr::mutate(
       name = name,
+      height = unit_to_mm(t - b),
+      width = unit_to_mm(l - r),
       margin_top = sum(vctrs::vec_slice(
         unit_to_mm(purrr::chuck(.plot_grob, "heights")), seq_len(t - 1)
       )),
@@ -43,7 +45,7 @@ calc_element_margin_data <- function(.ggplot){
     ) |>
     dplyr::ungroup() |>
     dplyr::mutate(
-      dplyr::across(-name, \(..x){ggplot2::unit(..x, "mm")}),
+      # dplyr::across(-name, \(..x){ggplot2::unit(..x, "mm")}),
       margin_y = margin_top + margin_bottom,
       margin_x = margin_left + margin_right,
     )
