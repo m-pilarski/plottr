@@ -27,8 +27,8 @@ calc_element_margin_data <- function(.plot_obj){
     dplyr::rowwise() |>
     dplyr::mutate(
       name = name,
-      height = unit_to_mm(t - b),
-      width = unit_to_mm(l - r),
+      height = unit_to_mm(purrr::chuck(.plot_grob, "heights", t)),
+      width = unit_to_mm(purrr::chuck(.plot_grob, "heights", l)),
       margin_top = sum(vctrs::vec_slice(
         unit_to_mm(purrr::chuck(.plot_grob, "heights")), seq_len(t - 1)
       )),
