@@ -67,7 +67,7 @@ plot_to_file <- function(
     ggplot2::is.ggplot(.plot_obj),
     fs::dir_exists(.figure_dir),
     .plot_name != ".",
-    all(names(.fonts) %in% c("main", "math", "mono")),
+    all(names(.fonts) %in% c("main", "math", "mono"))
   )
 
   .figure_path_noext <- fs::path(.figure_dir, .plot_name)
