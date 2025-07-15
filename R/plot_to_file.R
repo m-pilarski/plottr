@@ -50,19 +50,24 @@ plot_to_file <- function(
     #   fs::path_temp(), digest::digest(environment()), ext="tikzDict"
     # )
     tikzMetricsDictionary=fs::path(
-      fs::path_temp(), "plottr-cache", ext="tikzDict"
+      fs::path_temp(), "plottr-tikz_cache", ext="tikzDict"
     )
   )
 
   if(is.null(.plot_name)){.plot_name <- deparse(substitute(.plot_obj))}
-  .showtext_off <- is(try(showtext::showtext_end(), silent=TRUE), "try-error")
+
+  if(rlang::is_installed("showtext")){
+    try(
+      expr={getFromNamespace("showtext_auto", "showtext")(enable=FALSE)},
+      silent=TRUE
+    )
+  }
 
   stopifnot(
     ggplot2::is.ggplot(.plot_obj),
     fs::dir_exists(.figure_dir),
     .plot_name != ".",
     all(names(.fonts) %in% c("main", "math", "mono")),
-    .showtext_off
   )
 
   .figure_path_noext <- fs::path(.figure_dir, .plot_name)
@@ -71,10 +76,10 @@ plot_to_file <- function(
   .figure_path_pdf <- fs::path_ext_set(.figure_path_noext, "pdf")
   .figure_path_png <- fs::path_ext_set(.figure_path_noext, "png")
 
-  .latex_packages <- stringr::str_c(
+  .latex_packages <- stringi::stri_c(
     "\\usepackage[T1]{fontenc}",
     "\\usepackage{graphicx}",
-    stringr::str_c("\\graphicspath{{", .figure_dir_tex, "}}"),
+    stringi::stri_c("\\graphicspath{{", .figure_dir_tex, "}}"),
     "\\usepackage{tikz}",
     "\\usetikzlibrary{calc}",
     "\\let\\pgfimage=\\includegraphics",
@@ -84,7 +89,7 @@ plot_to_file <- function(
     "\\usepackage{microtype}",
     "\\usepackage{unicode-math}",
     purrr::imap_chr(purrr::compact(.fonts), function(..v, ..n){
-      stringr::str_c("\\set", ..n, "font{", ..v, "}")
+      stringi::stri_c("\\set", ..n, "font{", ..v, "}")
     }) %0% "",
     "\\usepackage{siunitx}",
     "\\sisetup{",
@@ -130,15 +135,14 @@ plot_to_file <- function(
 
   options(.options_backup)
 
-  if(!isTRUE(.knit)){
-    if(interactive()){magick::image_read(.figure_path_png)}
-    return(.figure_path_png)
-  }else{
+  if(isTRUE(.knit)){
     return(knitr::include_graphics(.figure_path_png, rel_path=FALSE))
+  }else{
+    if(interactive()){magick::image_read(.figure_path_png)}
   }
+  return(invisible(.figure_path_png))
 
 }
-
 
 #'
 #'
@@ -146,18 +150,22 @@ plot_to_file <- function(
 #'
 pltr_escape_tex <- function(.str){
   .str |>
-    stringr::str_split(".(?=<tex>)|(?<=</tex>)") |>
+    stringi::stri_split_regex(".(?=<tex>)|(?<=</tex>)") |>
     purrr::map_chr(function(..tok_vec){
       ..tok_vec |>
         purrr::map_chr(function(...tok){
-          if(stringr::str_detect(...tok, "^<tex>.*</tex>$")){
-            ...tok <- stringr::str_remove_all(...tok, "^<tex>|</tex>$")
+          if(stringi::stri_detect_regex(...tok, "^<tex>.*</tex>$")){
+            ...tok <- stringi::stri_replace_all_regex(
+              ...tok, "^<tex>|</tex>$", ""
+            )
           }else{
-            ...tok <- stringr::str_replace_all(...tok, "[_%$#&{}]", "\\\\\\0")
+            ...tok <- stringi::stri_replace_all_regex(
+              ...tok, "[_%$#&{}]", "\\\\\\0"
+            )
           }
           return(...tok)
         }) |>
-        stringr::str_c(collapse="")
+        stringi::stri_c(collapse="")
     }) |>
     rlang::set_names(nm=names(.str))
 }

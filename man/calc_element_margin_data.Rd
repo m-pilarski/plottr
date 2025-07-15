@@ -4,10 +4,10 @@
 \alias{calc_element_margin_data}
 \title{Title}
 \usage{
-calc_element_margin_data(.ggplot)
+calc_element_margin_data(.plot_obj)
 }
 \arguments{
-\item{.ggplot}{...}
+\item{.plot_obj}{...}
 }
 \value{
 tibble()

@@ -11,7 +11,7 @@ unit_to_mm <- function(.x){
 
 #' Title
 #'
-#' @param .ggplot ...
+#' @param .plot_obj ...
 #'
 #' @returns tibble()
 #' @export

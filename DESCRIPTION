@@ -18,11 +18,10 @@ Imports:
     pdftools,
     purrr,
     rlang,
-    showtext,
-    stringr,
-    tidyselect,
+    stringi,
     tikzDevice,
     tinytex,
+    utils,
     vctrs
 Encoding: UTF-8
 LazyData: true
