@@ -88,9 +88,9 @@ plot_to_file <- function(
     "\\usepackage[active,tightpage,psfixbb]{preview}",
     "\\usepackage{microtype}",
     "\\usepackage{unicode-math}",
-    !!!purrr::imap_chr(purrr::compact(.fonts), function(..v, ..n){
+    stringi::stri_c(purrr::imap_chr(purrr::compact(.fonts), function(..v, ..n){
       stringi::stri_c("\\set", ..n, "font{", ..v, "}")
-    }) %0% "",
+    }), collapse="\n"),
     "\\usepackage{siunitx}",
     "\\sisetup{",
     "  locale = US,",
