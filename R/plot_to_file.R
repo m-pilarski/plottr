@@ -77,7 +77,7 @@ plot_to_file <- function(
   .figure_path_png <- fs::path_ext_set(.figure_path_noext, "png")
 
   .latex_packages <- stringi::stri_c(
-    "\\usepackage[T1]{fontenc}",
+    # "\\usepackage[T1]{fontenc}",
     "\\usepackage{graphicx}",
     stringi::stri_c("\\graphicspath{{", .figure_dir_tex, "}}"),
     "\\usepackage{tikz}",
@@ -88,9 +88,9 @@ plot_to_file <- function(
     "\\usepackage[active,tightpage,psfixbb]{preview}",
     "\\usepackage{microtype}",
     "\\usepackage{unicode-math}",
-    purrr::imap_chr(purrr::compact(.fonts), function(..v, ..n){
+    stringi::stri_c(purrr::imap_chr(purrr::compact(.fonts), function(..v, ..n){
       stringi::stri_c("\\set", ..n, "font{", ..v, "}")
-    }) %0% "",
+    }) %0% ""),
     "\\usepackage{siunitx}",
     "\\sisetup{",
     "  locale = US,",
