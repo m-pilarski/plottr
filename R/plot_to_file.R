@@ -77,7 +77,6 @@ plot_to_file <- function(
   .figure_path_png <- fs::path_ext_set(.figure_path_noext, "png")
 
   .latex_packages <- stringi::stri_c(
-    # "\\usepackage[T1]{fontenc}",
     "\\usepackage{graphicx}",
     stringi::stri_c("\\graphicspath{{", .figure_dir_tex, "}}"),
     "\\usepackage{tikz}",
@@ -160,7 +159,7 @@ pltr_escape_tex <- function(.str){
             )
           }else{
             ...tok <- stringi::stri_replace_all_regex(
-              ...tok, "[_%$#&{}]", "\\\\\\0"
+              ...tok, "[_%$#&{}]", "\\\\$0"
             )
           }
           return(...tok)
