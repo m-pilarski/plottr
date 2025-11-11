@@ -78,7 +78,7 @@ plot_to_file <- function(
 
   .latex_packages <- stringi::stri_c(
     "\\usepackage{graphicx}",
-    stringi::stri_c("\\graphicspath{{", .figure_dir_tex, "}}"),
+    # stringi::stri_c("\\graphicspath{{", .figure_dir_tex, "}}"),
     "\\usepackage{tikz}",
     "\\usetikzlibrary{calc}",
     "\\let\\pgfimage=\\includegraphics",
