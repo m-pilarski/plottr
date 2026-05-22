@@ -13,7 +13,8 @@ plot_to_file(
   .units = "mm",
   .png_dpi = 600,
   .knit = FALSE,
-  .fonts = list(main = NULL, math = NULL, mono = NULL)
+  .fonts = list(main = NULL, math = NULL, mono = NULL),
+  .plot_trans = NULL
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ plot_to_file(
 \item{.knit}{...}
 
 \item{.fonts}{...}
+
+\item{.plot_trans}{...}
 }
 \value{
 If .knit ...

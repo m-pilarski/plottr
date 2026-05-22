@@ -9,6 +9,7 @@
 #' @param .png_dpi ...
 #' @param .knit ...
 #' @param .fonts ...
+#' @param .plot_trans ...
 #' @return If .knit ...
 #' @export
 #' @examples
@@ -23,8 +24,13 @@
 plot_to_file <- function(
   .plot_obj, .plot_name=NULL, .figure_dir=".", .width=50, .height=50,
   .units="mm", .png_dpi=600, .knit=FALSE,
-  .fonts=list(main=NULL, math=NULL, mono=NULL)
+  .fonts=list(main=NULL, math=NULL, mono=NULL),
+  .plot_trans = NULL
 ){
+
+  checkmate::assert(
+    checkmate::check_function(.plot_trans, null.ok = TRUE)
+  )
 
   `%0%` <- vctrs::`%0%`
 
