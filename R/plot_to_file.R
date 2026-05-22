@@ -118,6 +118,10 @@ plot_to_file <- function(
     packages=.latex_packages, standAlone=TRUE, lwdUnit=72.27/96
   )
 
+  if(!is.null(.plot_trans)){
+    .plot_obj <- rlang::exec(.plot_trans, .plot_obj)
+  }
+
   tryCatch(expr={print(.plot_obj)}, finally={dev.off()})
 
   fs::file_move(
