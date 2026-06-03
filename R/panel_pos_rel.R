@@ -1,3 +1,22 @@
+with_graphics_device <- function(expr) {
+  opened_device <- is.null(grDevices::dev.list())
+
+  if (opened_device) {
+    grDevices::pdf(NULL)
+    device <- grDevices::dev.cur()
+
+    on.exit({
+      devices <- grDevices::dev.list()
+      if (!is.null(devices) && device %in% devices) {
+        grDevices::dev.off(device)
+      }
+    }, add = TRUE)
+  }
+
+  force(expr)
+}
+
+
 #' Title
 #'
 #' @param .x ...
@@ -6,7 +25,7 @@
 #'
 #' @examples NULL
 unit_to_mm <- function(.x){
-  grid::convertUnit(.x, "mm", valueOnly=TRUE)
+  with_graphics_device({grid::convertUnit(.x, "mm", valueOnly=TRUE)})
 }
 
 #' Title
